@@ -5,7 +5,7 @@ homepage = 'https://github.com/mrmarekwitkowski/redwing'
 
 Gem::Specification.new do |s|
   s.name = 'redwing'
-  s.version = Redwing::VERSION::STRING
+  s.version = Redwing::VERSION
   s.summary = 'Redwing'
   s.description = 'Rails inspired (web) application framework'
   s.authors = ['Marek Witkowski']
