@@ -5,7 +5,7 @@ require_relative 'lib/redwing/version'
 
 class Redwing < Thor
   GEM_NAME = 'redwing'
-  GEM_VERSION = ::Redwing::VERSION::STRING
+  GEM_VERSION = ::Redwing::VERSION
 
   desc 'build', 'build Redwing gem'
 
@@ -25,9 +25,9 @@ class Redwing < Thor
     system('rm *.gem')
   end
 
-  desc 'release', 'release Redwing gem'
+  desc 'release_pr', 'trigger a release PR via release-please (runs on GitHub)'
 
-  def release
-    # TODO
+  def release_pr
+    system('gh workflow run release-please.yml')
   end
 end
