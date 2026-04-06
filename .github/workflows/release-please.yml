@@ -14,6 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: googleapis/release-please-action@v4
+        env:
+          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
         with:
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
           release-type: ruby
-          version-file: lib/redwing/version.rb
