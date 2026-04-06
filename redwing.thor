@@ -25,19 +25,39 @@ class Redwing < Thor
     system('rm *.gem')
   end
 
-  desc 'release_pr', 'trigger a release PR via release-please (runs on GitHub)'
+  desc 'bump', 'bump gem version (--major, --minor, or --tiny)'
+  method_option :major, type: :boolean, desc: 'Bump major version'
+  method_option :minor, type: :boolean, desc: 'Bump minor version'
+  method_option :tiny,  type: :boolean, desc: 'Bump tiny (patch) version'
 
-  def release_pr
-    system('gh workflow run release-please.yml')
-  end
-
-  desc 'publish VERSION', 'trigger gem publish workflow for a given version'
-
-  def publish(version)
-    if GEM_VERSION != version
-      say "Version mismatch: current is #{GEM_VERSION}, requested #{version}", :red
+  def bump
+    unless [options[:major], options[:minor], options[:tiny]].one?
+      say 'Specify exactly one of --major, --minor, or --tiny', :red
       exit 1
     end
-    system('gh workflow run publish.yml')
+
+    major, minor, tiny = GEM_VERSION.split('.').map(&:to_i)
+
+    if options[:major]
+      major += 1; minor = 0; tiny = 0
+    elsif options[:minor]
+      minor += 1; tiny = 0
+    elsif options[:tiny]
+      tiny += 1
+    end
+
+    new_version = "#{major}.#{minor}.#{tiny}"
+    branch = "release/v#{new_version}"
+
+    unless system("git checkout -b #{branch}")
+      say "Failed to create branch #{branch}", :red
+      exit 1
+    end
+
+    version_file = File.expand_path('lib/redwing/version.rb', __dir__)
+    content = File.read(version_file).sub(/VERSION = '[^']+'/, "VERSION = '#{new_version}'")
+    File.write(version_file, content)
+
+    say "Bumped #{GEM_VERSION} → #{new_version} on branch #{branch}", :green
   end
 end
