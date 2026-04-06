@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.4](https://github.com/mrmarekwitkowski/redwing/compare/v0.0.3...v0.0.4) (2026-04-06)
+
+
+### Bug Fixes
+
+* relax required_rubygems_version to &gt;= 3.3 ([#7](https://github.com/mrmarekwitkowski/redwing/issues/7)) ([79edd55](https://github.com/mrmarekwitkowski/redwing/commit/79edd554d63e53fa0dc204be45c5fa14c6472b48))
+
 ## [0.0.3](https://github.com/mrmarekwitkowski/redwing/compare/v0.0.2...v0.0.3) (2026-04-06)
 
 
