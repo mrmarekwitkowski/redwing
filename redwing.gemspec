@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-version = File.read(File.expand_path('VERSION', __dir__)).strip
+require_relative 'lib/redwing/version'
 homepage = 'https://github.com/mrmarekwitkowski/redwing'
 
 Gem::Specification.new do |s|
   s.name = 'redwing'
-  s.version = version
+  s.version = Redwing::VERSION::STRING
   s.summary = 'Redwing'
   s.description = 'Rails inspired (web) application framework'
   s.authors = ['Marek Witkowski']
