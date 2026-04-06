@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.license = 'MIT'
 
   s.required_ruby_version = '>= 3.4'
-  s.required_rubygems_version = '~> 4.0'
+  s.required_rubygems_version = '>= 3.3'
 
   s.metadata = {
     'bug_tracker_uri' => "#{homepage}/issues",
