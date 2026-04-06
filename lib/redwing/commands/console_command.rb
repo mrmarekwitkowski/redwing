@@ -13,7 +13,7 @@ module Redwing
         app_file = File.join(app_root, 'config', 'application.rb')
         load app_file if File.exist?(app_file)
 
-        puts "Redwing #{Redwing::VERSION::STRING} console (#{RUBY_ENGINE} #{RUBY_VERSION})"
+        puts "Redwing #{Redwing::VERSION} console (#{RUBY_ENGINE} #{RUBY_VERSION})"
 
         begin
           require 'pry'
