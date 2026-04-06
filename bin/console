@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'bundler/setup'
+
+APP_ROOT = File.expand_path('..', __dir__)
+LIB_PATH = File.join(APP_ROOT, 'lib')
+$LOAD_PATH.unshift(LIB_PATH) unless $LOAD_PATH.include?(LIB_PATH)
+
+ENV['DEBUG'] = ENV.fetch('DEBUG', '1')
+
+require 'redwing'
+
+puts "[console] DEBUG environment variable is set to => '#{ENV.fetch('DEBUG')}'"
+puts "[console] Loaded Redwing version #{Redwing::VERSION::STRING}"
+puts "[console] Ruby #{RUBY_VERSION} (#{RUBY_PLATFORM})"
+puts "[console] APP_ROOT=#{APP_ROOT}"
+
+begin
+  require 'pry'
+  puts '[console] Starting Pry...'
+  Pry.start
+rescue LoadError
+  require 'irb'
+  puts '[console] Pry not available, falling back to IRB...'
+  IRB.start(__FILE__)
+end
