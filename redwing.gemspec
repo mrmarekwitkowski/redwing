@@ -36,7 +36,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rubocop', '~> 1.86.0'
   # rubocop:enable Gemspec/DevelopmentDependencies
 
-  s.files = Dir['*.md', 'bin/*', 'lib/**/*.rb']
+  s.files = Dir['README.md', 'bin/redwing', 'lib/**/*.rb']
   s.require_path = 'lib'
   s.executables = ['redwing']
 end
