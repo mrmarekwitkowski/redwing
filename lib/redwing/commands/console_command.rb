@@ -1,14 +1,27 @@
 # frozen_string_literal: true
 
 require 'thor'
+require 'redwing/version'
 
 module Redwing
   module Commands
     class ConsoleCommand < Thor
-      desc 'console', 'Start an interactive console (Pry or IRB)'
+      desc 'console', 'Start an interactive Redwing console'
 
       def console
-        exec File.join(APP_ROOT, 'bin', 'console')
+        app_root = Dir.pwd
+        app_file = File.join(app_root, 'config', 'application.rb')
+        load app_file if File.exist?(app_file)
+
+        puts "Redwing #{Redwing::VERSION::STRING} console (#{RUBY_ENGINE} #{RUBY_VERSION})"
+
+        begin
+          require 'pry'
+          Pry.start
+        rescue LoadError
+          require 'irb'
+          IRB.start(__FILE__)
+        end
       end
 
       default_task :console
