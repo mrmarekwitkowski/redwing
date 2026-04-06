@@ -30,4 +30,14 @@ class Redwing < Thor
   def release_pr
     system('gh workflow run release-please.yml')
   end
+
+  desc 'publish VERSION', 'trigger gem publish workflow for a given version'
+
+  def publish(version)
+    if GEM_VERSION != version
+      say "Version mismatch: current is #{GEM_VERSION}, requested #{version}", :red
+      exit 1
+    end
+    system('gh workflow run publish.yml')
+  end
 end
