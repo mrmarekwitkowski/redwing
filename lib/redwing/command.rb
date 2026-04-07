@@ -29,7 +29,9 @@ module Redwing
         raise Error::UnknownCommand, "Unknown command: #{@argv.first}" if command_klass.nil?
 
         exec_klass = command_klass.new(@args, command_options)
-        raise Error::PerformNotImplemented, "#{exec_klass.class} does not implement #perform" unless exec_klass.respond_to?(:perform)
+        unless exec_klass.respond_to?(:perform)
+          raise Error::PerformNotImplemented, "#{exec_klass.class} does not implement #perform"
+        end
 
         trap_interrupt!
         exec_klass.perform

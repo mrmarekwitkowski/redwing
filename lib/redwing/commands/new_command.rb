@@ -15,12 +15,13 @@ module Redwing
 
       no_commands do
         def perform
-          raise ArgumentError, "Invalid app type '#{app_type}'. Valid types: #{VALID_APP_TYPES.join(', ')}" unless VALID_APP_TYPES.include?(app_type)
+          validate!
 
           target_path = "#{Pathname.pwd}/#{app_name}"
           template_name = 'README.md'
-
-          Generator.create_file_by_template("templates/#{template_name}", "#{target_path}/#{template_name}", {name: app_name})
+          destination = "#{target_path}/#{template_name}"
+          template = "templates/#{template_name}"
+          Generator.create_file_by_template(template, destination, {name: app_name})
         end
 
         def app_type
@@ -29,6 +30,18 @@ module Redwing
 
         def app_name
           @name
+        end
+
+        def validate!
+          raise ArgumentError, "Invalid app type '#{app_type}'. Valid types: #{valid_app_types}" unless valid_app_type?
+        end
+
+        def valid_app_type?
+          VALID_APP_TYPES.include?(app_type)
+        end
+
+        def valid_app_types
+          VALID_APP_TYPES.join(', ')
         end
       end
     end
