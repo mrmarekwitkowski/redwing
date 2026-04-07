@@ -12,7 +12,7 @@ RSpec.describe Redwing::Server do
 
     it 'uses puma as the server handler' do
       Redwing::Server.start(host: 'localhost', port: 9292)
-      expect(Rackup::Handler).to have_received(:get).with('puma')
+      expect(Rackup::Handler).to have_received(:get).with('horst')
     end
 
     it 'runs with the given host and port' do
