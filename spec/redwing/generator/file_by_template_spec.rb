@@ -6,7 +6,7 @@ require 'redwing/generator/file_by_template'
 RSpec.describe Redwing::Generator::FileByTemplate do
   let(:tmpdir)      { Dir.mktmpdir }
   let(:destination) { File.join(tmpdir, 'README.md') }
-  let(:data)        { { name: 'test-app' } }
+  let(:data)        { {name: 'test-app'} }
 
   after { FileUtils.rm_rf(tmpdir) }
 

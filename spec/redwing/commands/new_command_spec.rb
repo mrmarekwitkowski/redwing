@@ -8,21 +8,21 @@ RSpec.describe Redwing::Commands::NewCommand do
 
     context 'with a valid app type' do
       it 'scaffolds an api app' do
-        described_class.new(['api', 'my-app'], {}).perform
+        described_class.new(%w[api my-app], {}).perform
         expect(Redwing::Generator).to have_received(:create_file_by_template)
-          .with('templates/README.md', "#{Pathname.pwd}/my-app/README.md", { name: 'my-app' })
+          .with('templates/README.md', "#{Pathname.pwd}/my-app/README.md", {name: 'my-app'})
       end
 
       it 'scaffolds a web app' do
-        described_class.new(['web', 'my-app'], {}).perform
+        described_class.new(%w[web my-app], {}).perform
         expect(Redwing::Generator).to have_received(:create_file_by_template)
-          .with('templates/README.md', "#{Pathname.pwd}/my-app/README.md", { name: 'my-app' })
+          .with('templates/README.md', "#{Pathname.pwd}/my-app/README.md", {name: 'my-app'})
       end
     end
 
     context 'with an invalid app type' do
       it 'raises ArgumentError' do
-        expect { described_class.new(['invalid', 'my-app'], {}).perform }
+        expect { described_class.new(%w[invalid my-app], {}).perform }
           .to raise_error(ArgumentError, /Invalid app type 'invalid'/)
       end
     end
