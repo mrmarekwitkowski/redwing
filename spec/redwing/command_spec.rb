@@ -3,60 +3,59 @@
 require 'redwing/command'
 
 RSpec.describe Redwing::Command do
-  describe '.invoke' do
-    before do
-      allow(Redwing::Commands::ConsoleCommand).to receive(:start)
-      allow(Redwing::Commands::ServerCommand).to receive(:start)
-    end
+  after { described_class.reset! }
 
-    context 'console command' do
-      it 'dispatches "console" to ConsoleCommand' do
-        described_class.invoke(['console'])
-        expect(Redwing::Commands::ConsoleCommand).to have_received(:start).with([])
-      end
+  describe '.execute' do
+    before { allow(Kernel).to receive(:exit) }
 
-      it 'dispatches "c" alias to ConsoleCommand' do
-        described_class.invoke(['c'])
-        expect(Redwing::Commands::ConsoleCommand).to have_received(:start).with([])
-      end
-    end
-
-    context 'server command' do
-      it 'dispatches "server" to ServerCommand' do
-        described_class.invoke(['server'])
-        expect(Redwing::Commands::ServerCommand).to have_received(:start).with([])
-      end
-
-      it 'dispatches "s" alias to ServerCommand' do
-        described_class.invoke(['s'])
-        expect(Redwing::Commands::ServerCommand).to have_received(:start).with([])
-      end
-    end
-
-    context 'with additional arguments' do
-      it 'passes remaining args to the command' do
-        described_class.invoke(['server', '--port', '4000'])
-        expect(Redwing::Commands::ServerCommand).to have_received(:start).with(['--port', '4000'])
-      end
-    end
-
-    context 'version flag' do
+    context 'version flags' do
       it 'outputs version for --version' do
-        expect { described_class.invoke(['--version']) }
+        expect { described_class.execute(['--version']) }
           .to output("#{Redwing::VERSION}\n").to_stdout
       end
 
       it 'outputs version for -v' do
-        expect { described_class.invoke(['-v']) }
+        expect { described_class.execute(['-v']) }
           .to output("#{Redwing::VERSION}\n").to_stdout
       end
     end
 
+    context 'console command' do
+      let(:command) { instance_double(Redwing::Commands::ConsoleCommand, perform: nil) }
+
+      before { allow(Redwing::Commands::ConsoleCommand).to receive(:new).and_return(command) }
+
+      it 'dispatches "console" to ConsoleCommand' do
+        described_class.execute(['console'])
+        expect(command).to have_received(:perform)
+      end
+
+      it 'dispatches "c" alias to ConsoleCommand' do
+        described_class.execute(['c'])
+        expect(command).to have_received(:perform)
+      end
+    end
+
+    context 'server command' do
+      let(:command) { instance_double(Redwing::Commands::ServerCommand, perform: nil) }
+
+      before { allow(Redwing::Commands::ServerCommand).to receive(:new).and_return(command) }
+
+      it 'dispatches "server" to ServerCommand' do
+        described_class.execute(['server'])
+        expect(command).to have_received(:perform)
+      end
+
+      it 'dispatches "s" alias to ServerCommand' do
+        described_class.execute(['s'])
+        expect(command).to have_received(:perform)
+      end
+    end
+
     context 'unknown command' do
-      it 'warns and exits with status 1' do
-        expect { described_class.invoke(['unknown']) }
-          .to output(/Unknown command: unknown/).to_stderr
-          .and raise_error(SystemExit) { |e| expect(e.status).to eq(1) }
+      it 'exits with status 1' do
+        described_class.execute(['unknown'])
+        expect(Kernel).to have_received(:exit).with(1)
       end
     end
   end

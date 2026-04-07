@@ -34,3 +34,4 @@ AllCops:
   SuggestExtensions: false
   Exclude:
     - '.irbrc'
+    - 'vendor/**/*'
