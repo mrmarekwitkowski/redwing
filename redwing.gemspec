@@ -31,6 +31,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'thor', '~> 1.5'
 
   # rubocop:disable Gemspec/DevelopmentDependencies
+  s.add_development_dependency 'irb', '~> 1.15'
   s.add_development_dependency 'pry', '~> 0.16.0'
   s.add_development_dependency 'rspec', '~> 3.13'
   s.add_development_dependency 'simplecov', '~> 0.22'
