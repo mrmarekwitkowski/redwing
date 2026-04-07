@@ -14,14 +14,24 @@ module Redwing
       argument :name, required: true, type: :string
 
       no_commands do
+        TEMPLATES = %w[
+          README.md
+          Gemfile
+          config/redwing.yml
+          config/routes.rb
+        ].freeze
+
         def perform
           validate!
 
           target_path = "#{Pathname.pwd}/#{app_name}"
-          template_name = 'README.md'
-          destination = "#{target_path}/#{template_name}"
-          template = "templates/#{template_name}"
-          Generator.create_file_by_template(template, destination, {name: app_name})
+          data = { name: app_name, type: app_type }
+
+          TEMPLATES.each do |template_name|
+            template = "templates/#{template_name}"
+            destination = "#{target_path}/#{template_name}"
+            Generator.create_file_by_template(template, destination, data)
+          end
         end
 
         def app_type
