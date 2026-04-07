@@ -16,7 +16,7 @@ module Redwing
         end
 
         def load_routes
-          require File.expand_path("config/routes")
+          require File.expand_path('config/routes')
         end
       end
     end

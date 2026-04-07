@@ -14,9 +14,9 @@ module Redwing
 
         if route
           body = route[:handler].call
-          [200, { "content-type" => "application/json" }, [body.to_json]]
+          [200, {'content-type' => 'application/json'}, [body.to_json]]
         else
-          [404, { "content-type" => "application/json" }, ['{"error":"Not Found"}']]
+          [404, {'content-type' => 'application/json'}, ['{"error":"Not Found"}']]
         end
       end
 

@@ -9,23 +9,22 @@ module Redwing
   module Commands
     class NewCommand < Command::BaseCommand
       VALID_APP_TYPES = %w[api web].freeze
+      TEMPLATES = %w[
+        README.md
+        Gemfile
+        config/redwing.yml
+        config/routes.rb
+      ].freeze
 
       argument :type, required: true, values: %w[api web]
       argument :name, required: true, type: :string
 
       no_commands do
-        TEMPLATES = %w[
-          README.md
-          Gemfile
-          config/redwing.yml
-          config/routes.rb
-        ].freeze
-
         def perform
           validate!
 
           target_path = "#{Pathname.pwd}/#{app_name}"
-          data = { name: app_name, type: app_type }
+          data = {name: app_name, type: app_type}
 
           TEMPLATES.each do |template_name|
             template = "templates/#{template_name}"

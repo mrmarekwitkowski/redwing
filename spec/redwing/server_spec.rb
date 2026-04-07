@@ -28,7 +28,7 @@ RSpec.describe Redwing::Server do
     it 'returns JSON response for a matched route' do
       Redwing.routes do
         get '/hello' do
-          { message: 'hello' }
+          {message: 'hello'}
         end
       end
 

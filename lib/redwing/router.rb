@@ -9,7 +9,7 @@ module Redwing
     end
 
     def get(path, &block)
-      @routes << { method: "GET", path: path, handler: block }
+      @routes << {method: 'GET', path: path, handler: block}
     end
 
     def match(method, path)

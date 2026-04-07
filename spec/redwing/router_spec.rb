@@ -7,11 +7,11 @@ RSpec.describe Redwing::Router do
 
   describe '#get' do
     it 'stores a GET route with path and handler' do
-      handler = proc { { message: 'hello' } }
+      handler = proc { {message: 'hello'} }
       router.get('/hello', &handler)
 
       expect(router.routes).to contain_exactly(
-        { method: 'GET', path: '/hello', handler: handler }
+        {method: 'GET', path: '/hello', handler: handler}
       )
     end
 

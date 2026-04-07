@@ -12,7 +12,7 @@ RSpec.describe 'Redwing.routes' do
   it 'evaluates the block in the router context' do
     Redwing.routes do
       get '/hello' do
-        { message: 'hello' }
+        {message: 'hello'}
       end
     end
 
