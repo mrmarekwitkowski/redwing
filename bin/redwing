@@ -6,4 +6,4 @@ $LOAD_PATH.unshift(lib_path) unless $LOAD_PATH.include?(lib_path)
 
 require 'redwing/command'
 
-Redwing::Command.invoke ARGV.dup
+Redwing::Command.execute ARGV.dup

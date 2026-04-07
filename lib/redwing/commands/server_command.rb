@@ -1,21 +1,19 @@
 # frozen_string_literal: true
 
-require 'thor'
 require 'redwing/server'
+require 'redwing/command/base_command'
 
 module Redwing
   module Commands
-    class ServerCommand < Thor
-      desc 'server', 'Start the Redwing server'
+    class ServerCommand < Command::BaseCommand
+      class_option :host, type: :string,  default: 'localhost', aliases: '-b', desc: 'Bind to host'
+      class_option :port, type: :numeric, default: 3001,        aliases: '-p', desc: 'Listen on port'
 
-      method_option :host, type: :string,  default: 'localhost', aliases: '-b', desc: 'Bind to host'
-      method_option :port, type: :numeric, default: 3001,        aliases: '-p', desc: 'Listen on port'
-
-      def server
-        Redwing::Server.start(host: options[:host], port: options[:port])
+      no_commands do
+        def perform
+          Redwing::Server.start(host: options[:host], port: options[:port])
+        end
       end
-
-      default_task :server
     end
   end
 end
