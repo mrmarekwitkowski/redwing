@@ -23,4 +23,25 @@ RSpec.describe Redwing::Router do
       expect(router.routes.map { |r| r[:path] }).to eq(['/hello', '/goodbye'])
     end
   end
+
+  describe '#match' do
+    it 'returns the matching route' do
+      router.get('/hello') { 'hello' }
+
+      route = router.match('GET', '/hello')
+
+      expect(route[:path]).to eq('/hello')
+      expect(route[:handler].call).to eq('hello')
+    end
+
+    it 'returns nil when no route matches' do
+      expect(router.match('GET', '/missing')).to be_nil
+    end
+
+    it 'does not match a different HTTP method' do
+      router.get('/hello') { 'hello' }
+
+      expect(router.match('POST', '/hello')).to be_nil
+    end
+  end
 end
