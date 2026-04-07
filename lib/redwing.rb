@@ -5,4 +5,6 @@ require 'redwing/version'
 
 module Redwing
   extend ActiveSupport::Autoload
+
+  autoload :Generator
 end
