@@ -39,9 +39,12 @@ class Redwing < Thor
     major, minor, tiny = GEM_VERSION.split('.').map(&:to_i)
 
     if options[:major]
-      major += 1; minor = 0; tiny = 0
+      major += 1
+      minor = 0
+      tiny = 0
     elsif options[:minor]
-      minor += 1; tiny = 0
+      minor += 1
+      tiny = 0
     elsif options[:tiny]
       tiny += 1
     end
