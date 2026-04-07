@@ -6,13 +6,13 @@ require 'pry'
 require 'redwing/commands/console_command'
 
 RSpec.describe Redwing::Commands::ConsoleCommand do
-  describe '#console' do
+  describe '#perform' do
     let(:command) { described_class.new([], {}) }
 
     before { allow(Pry).to receive(:start) }
 
     it 'prints version info' do
-      expect { command.console }.to output(/Redwing #{Redwing::VERSION}/).to_stdout
+      expect { command.perform }.to output(/Redwing #{Redwing::VERSION}/).to_stdout
     end
 
     context 'when config/application.rb exists' do
@@ -20,7 +20,7 @@ RSpec.describe Redwing::Commands::ConsoleCommand do
         app_file = File.join(Dir.pwd, 'config', 'application.rb')
         allow(File).to receive(:exist?).with(app_file).and_return(true)
         allow(command).to receive(:load)
-        command.console
+        command.perform
         expect(command).to have_received(:load).with(app_file)
       end
     end
@@ -29,7 +29,7 @@ RSpec.describe Redwing::Commands::ConsoleCommand do
       it 'does not load any file' do
         allow(File).to receive(:exist?).and_return(false)
         allow(command).to receive(:load)
-        command.console
+        command.perform
         expect(command).not_to have_received(:load)
       end
     end
@@ -39,7 +39,7 @@ RSpec.describe Redwing::Commands::ConsoleCommand do
         allow(command).to receive(:require).and_call_original
         allow(command).to receive(:require).with('pry').and_raise(LoadError)
         allow(IRB).to receive(:start)
-        command.console
+        command.perform
         expect(IRB).to have_received(:start)
       end
     end
