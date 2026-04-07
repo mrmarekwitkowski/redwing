@@ -1,0 +1,9 @@
+# frozen_string_literal: true
+
+require "redwing"
+
+Redwing.routes do
+  get "/hello" do
+    { message: "Hello from <%= name %>" }
+  end
+end
