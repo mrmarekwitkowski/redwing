@@ -7,16 +7,24 @@ RSpec.describe Redwing::Commands::NewCommand do
     before { allow(Redwing::Generator).to receive(:create_file_by_template) }
 
     context 'with a valid app type' do
-      it 'scaffolds an api app' do
+      let(:target_path) { "#{Pathname.pwd}/my-app" }
+
+      it 'scaffolds all api templates' do
         described_class.new(%w[api my-app], {}).perform
-        expect(Redwing::Generator).to have_received(:create_file_by_template)
-          .with('templates/README.md', "#{Pathname.pwd}/my-app/README.md", {name: 'my-app'})
+
+        %w[README.md Gemfile config/redwing.yml config/routes.rb].each do |file|
+          expect(Redwing::Generator).to have_received(:create_file_by_template)
+            .with("templates/#{file}", "#{target_path}/#{file}", {name: 'my-app', type: 'api'})
+        end
       end
 
-      it 'scaffolds a web app' do
+      it 'scaffolds all web templates' do
         described_class.new(%w[web my-app], {}).perform
-        expect(Redwing::Generator).to have_received(:create_file_by_template)
-          .with('templates/README.md', "#{Pathname.pwd}/my-app/README.md", {name: 'my-app'})
+
+        %w[README.md Gemfile config/redwing.yml config/routes.rb].each do |file|
+          expect(Redwing::Generator).to have_received(:create_file_by_template)
+            .with("templates/#{file}", "#{target_path}/#{file}", {name: 'my-app', type: 'web'})
+        end
       end
     end
 
