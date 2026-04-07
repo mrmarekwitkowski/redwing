@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
   }
 
   s.add_dependency 'activesupport', '~> 8.1', '>= 8.1.3'
+  s.add_dependency 'irb', '~> 1.15'
   s.add_dependency 'puma', '~> 7.2'
   s.add_dependency 'rack', '~> 3.2', '>= 3.2.5'
   s.add_dependency 'rack-cors', '~> 3.0'
@@ -34,6 +35,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'pry', '~> 0.16.0'
   s.add_development_dependency 'rspec', '~> 3.13'
   s.add_development_dependency 'rubocop', '~> 1.86.0'
+  s.add_development_dependency 'simplecov', '~> 0.22'
   # rubocop:enable Gemspec/DevelopmentDependencies
 
   s.files = Dir['README.md', 'bin/redwing', 'lib/**/*.rb']
