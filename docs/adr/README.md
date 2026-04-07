@@ -1,13 +1,14 @@
 # Architecture Decision Records (ADRs)
 
-This directory contains Architecture Decision Records for the **redwing** project. ADRs document important architectural and design decisions, helping the team understand why certain choices were made and what alternatives were considered.
+This directory contains Architecture Decision Records for the **redwing** project. ADRs document important architectural
+and design decisions, helping the team understand why certain choices were made and what alternatives were considered.
 
 ## Current ADRs
 
-| Number | Title | Status | Date |
-|--------|-------|--------|------|
+| Number                                | Title             | Status   | Date       |
+|---------------------------------------|-------------------|----------|------------|
 | [ADR-0001](0001-core-dependencies.md) | Core Dependencies | Accepted | 2026-04-07 |
-| [ADR-0002](0002-test-tooling.md) | Test Tooling | Accepted | 2026-04-07 |
+| [ADR-0002](0002-test-tooling.md)      | Test Tooling      | Accepted | 2026-04-07 |
 
 ## Creating a New ADR
 
@@ -20,13 +21,16 @@ This directory contains Architecture Decision Records for the **redwing** projec
 ## ADR Lifecycle
 
 ### Status Values
+
 - **Proposed**: Under discussion, not yet decided
 - **Accepted**: Approved and currently active
 - **Deprecated**: No longer recommended but may still be in use
 - **Superseded**: Replaced by a newer ADR
 
 ### When to Create an ADR
+
 Create an ADR for decisions that:
+
 - Affect the overall architecture or design patterns
 - Have significant long-term impact
 - Involve trade-offs between multiple viable options
@@ -34,6 +38,7 @@ Create an ADR for decisions that:
 - Future team members should understand
 
 ### Examples of ADR-worthy decisions:
+
 - Technology choices (frameworks, libraries, tools)
 - Architectural patterns and structures
 - API design approaches
@@ -44,6 +49,7 @@ Create an ADR for decisions that:
 ## Best Practices
 
 ### Writing ADRs
+
 - **Be concise**: Keep it readable in 5-10 minutes
 - **Focus on "why"**: Explain reasoning, not just what was decided
 - **Include context**: Help readers understand the situation
@@ -51,6 +57,7 @@ Create an ADR for decisions that:
 - **Be honest about trade-offs**: Include both positive and negative consequences
 
 ### Maintaining ADRs
+
 - **Update status**: Change status as decisions evolve
 - **Link related ADRs**: Reference other relevant decisions
 - **Don't delete**: Deprecated ADRs provide valuable historical context
@@ -59,9 +66,11 @@ Create an ADR for decisions that:
 ## Resources
 
 - [ADR GitHub Organization](https://adr.github.io/) - Community resources and examples
-- [Architecture Decision Records by Michael Nygard](http://thinkrelevance.com/blog/2011/11/15/documenting-architecture-decisions) - Original blog post
+- [Architecture Decision Records by Michael Nygard](http://thinkrelevance.com/blog/2011/11/15/documenting-architecture-decisions) -
+  Original blog post
 - [ADR Tools](https://github.com/npryce/adr-tools) - Command-line tools for managing ADRs
 
 ## Questions?
 
-If you have questions about the ADR process or need help creating an ADR, reach out to the team or reference existing ADRs as examples.
+If you have questions about the ADR process or need help creating an ADR, reach out to the team or reference existing
+ADRs as examples.

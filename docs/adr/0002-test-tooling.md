@@ -6,7 +6,8 @@ Accepted
 
 ## Context
 
-As redwing's codebase grew, a test framework and coverage tool needed to be established. The choice had to fit a gem project with no non-technical stakeholders and a white-box testing context.
+As redwing's codebase grew, a test framework and coverage tool needed to be established. The choice had to fit a gem
+project with no non-technical stakeholders and a white-box testing context.
 
 ## Decision
 

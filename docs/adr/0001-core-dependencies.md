@@ -6,7 +6,8 @@ Accepted
 
 ## Context
 
-Redwing is a lightweight Rack-based web framework inspired by Rails. At project inception, foundational dependencies had to be chosen for server handling, CLI, and utilities.
+Redwing is a lightweight Rack-based web framework inspired by Rails. At project inception, foundational dependencies had
+to be chosen for server handling, CLI, and utilities.
 
 ## Decision
 
@@ -26,7 +27,8 @@ Adopt Rack, Thor, and ActiveSupport as core runtime dependencies from the start.
 
 ### Negative
 
-- ActiveSupport is a heavy dependency for a "lightweight" framework — pulls in significant weight even when only a fraction is used
+- ActiveSupport is a heavy dependency for a "lightweight" framework — pulls in significant weight even when only a
+  fraction is used
 - Tight coupling to Rails ecosystem from day one
 
 ## Alternatives Considered
