@@ -10,7 +10,11 @@ module Redwing
       server: %w[server s]
     }.freeze
 
+    VERSION_MAPPINGS = %w[-v --version].to_set
+
     def self.invoke(argv)
+      return puts Redwing::VERSION if VERSION_MAPPINGS.include?(argv.first)
+
       command_name = COMMAND_WHITELIST.find { |_, aliases| aliases.include?(argv.first) }&.first
       args = argv.drop(1)
 
