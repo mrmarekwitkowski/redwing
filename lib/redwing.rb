@@ -6,6 +6,7 @@ require 'redwing/version'
 module Redwing
   extend ActiveSupport::Autoload
 
+  autoload :Config
   autoload :Generator
   autoload :Router
 
