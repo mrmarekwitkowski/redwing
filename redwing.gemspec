@@ -33,6 +33,7 @@ Gem::Specification.new do |s|
   # rubocop:disable Gemspec/DevelopmentDependencies
   s.add_development_dependency 'pry', '~> 0.16.0'
   s.add_development_dependency 'rspec', '~> 3.13'
+  s.add_development_dependency 'simplecov', '~> 0.22'
   s.add_development_dependency 'rubocop', '~> 1.86.0'
   # rubocop:enable Gemspec/DevelopmentDependencies
 
