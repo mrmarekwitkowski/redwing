@@ -1,13 +1,8 @@
 # frozen_string_literal: true
 
-require 'redwing'
+# simplecov must be required before app code to track coverage correctly
 require 'simplecov'
-
-SimpleCov.start do
-  enable_coverage :branch
-  coverage_dir 'tmp/coverage'
-  add_filter '/spec/'
-end
+require 'redwing'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
