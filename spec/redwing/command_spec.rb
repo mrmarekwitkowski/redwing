@@ -40,6 +40,18 @@ RSpec.describe Redwing::Command do
       end
     end
 
+    context 'version flag' do
+      it 'outputs version for --version' do
+        expect { described_class.invoke(['--version']) }
+          .to output("#{Redwing::VERSION}\n").to_stdout
+      end
+
+      it 'outputs version for -v' do
+        expect { described_class.invoke(['-v']) }
+          .to output("#{Redwing::VERSION}\n").to_stdout
+      end
+    end
+
     context 'unknown command' do
       it 'warns and exits with status 1' do
         expect { described_class.invoke(['unknown']) }
