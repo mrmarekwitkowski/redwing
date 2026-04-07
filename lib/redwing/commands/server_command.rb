@@ -11,7 +11,12 @@ module Redwing
 
       no_commands do
         def perform
+          load_routes
           Redwing::Server.start(host: options[:host], port: options[:port])
+        end
+
+        def load_routes
+          require File.expand_path("config/routes")
         end
       end
     end
