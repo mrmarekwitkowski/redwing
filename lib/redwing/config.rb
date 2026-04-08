@@ -1,14 +1,13 @@
 # frozen_string_literal: true
 
-require 'yaml'
-
 module Redwing
   class Config
-    attr_reader :type
+    attr_accessor :views_root, :log_file, :logger
 
-    def initialize(path = 'config/redwing.yml')
-      data = YAML.safe_load_file(path, symbolize_names: true)
-      @type = data[:type].to_sym
+    def initialize
+      @views_root = 'app/views'
+      @log_file = 'log/redwing.log'
+      @logger = nil # set after Redwing::Logger is available
     end
   end
 end
