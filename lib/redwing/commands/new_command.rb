@@ -14,6 +14,11 @@ module Redwing
         config/routes.rb
       ].freeze
 
+      VIEW_TEMPLATES = %w[
+        app/views/layouts/application.html.erb
+        app/views/home/index.html.erb
+      ].freeze
+
       argument :name, required: true, type: :string
       class_option :api, type: :boolean, default: false, desc: 'Generate an API-only app'
 
@@ -22,11 +27,11 @@ module Redwing
           target_path = "#{Pathname.pwd}/#{app_name}"
           data = {name: app_name}
 
-          TEMPLATES.each do |template_name|
-            template = "templates/#{template_name}.tt"
-            destination = "#{target_path}/#{template_name}"
-            Generator.create_file_by_template(template, destination, data)
-          end
+          scaffold_templates(TEMPLATES, target_path, data)
+
+          return if api_only?
+
+          scaffold_templates(VIEW_TEMPLATES, target_path, data)
         end
 
         def app_name
@@ -35,6 +40,12 @@ module Redwing
 
         def api_only?
           options[:api]
+        end
+
+        def scaffold_templates(templates, target_path, data)
+          templates.each do |template_name|
+            Generator.create_file_by_template("templates/#{template_name}.tt", "#{target_path}/#{template_name}", data)
+          end
         end
       end
     end
