@@ -13,8 +13,14 @@ module Redwing
         route = Redwing.routes.match(request.request_method, request.path_info)
 
         if route
-          body = route[:handler].call
-          [200, {'content-type' => 'application/json'}, [body.to_json]]
+          renderer = Redwing::Renderer.new
+          body = renderer.instance_eval(&route[:handler])
+
+          if body.is_a?(Hash)
+            [200, {'content-type' => 'application/json'}, [body.to_json]]
+          else
+            [200, {'content-type' => 'text/html'}, [body.to_s]]
+          end
         else
           [404, {'content-type' => 'application/json'}, ['{"error":"Not Found"}']]
         end

@@ -3,7 +3,7 @@
 require "redwing"
 
 Redwing.routes do
-  get "/hello" do
-    { message: "Hello from <%= name %>" }
+  get "/" do
+    render "home/index"
   end
 end
