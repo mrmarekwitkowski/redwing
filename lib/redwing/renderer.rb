@@ -4,12 +4,10 @@ require 'erb'
 
 module Redwing
   class Renderer
-    VIEWS_ROOT = 'app/views'
-    LAYOUT = 'app/views/layouts/application.html.erb'
-
     def render(template, locals = {})
-      content = render_template("#{VIEWS_ROOT}/#{template}.html.erb", locals)
-      render_layout(content, locals)
+      views_root = Redwing.config.views_root
+      content = render_template("#{views_root}/#{template}.html.erb", locals)
+      render_layout(content, locals, views_root)
     end
 
     private
@@ -19,8 +17,8 @@ module Redwing
       RenderContext.new(locals).render_with(erb)
     end
 
-    def render_layout(content, locals)
-      erb = ERB.new(File.read(LAYOUT))
+    def render_layout(content, locals, views_root)
+      erb = ERB.new(File.read("#{views_root}/layouts/application.html.erb"))
       RenderContext.new(locals).render_with(erb) { content }
     end
 
@@ -29,7 +27,7 @@ module Redwing
         locals.each { |k, v| define_singleton_method(k) { v } }
       end
 
-      def render_with(erb, &block)
+      def render_with(erb, &)
         erb.result(binding)
       end
     end

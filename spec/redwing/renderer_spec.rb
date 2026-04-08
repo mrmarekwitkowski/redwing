@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'redwing/renderer'
+require 'redwing'
 
 RSpec.describe Redwing::Renderer do
   subject(:renderer) { described_class.new }
@@ -9,7 +9,7 @@ RSpec.describe Redwing::Renderer do
   let(:template) { '<p>Hello</p>' }
 
   before do
-    allow(File).to receive(:read).with(described_class::LAYOUT).and_return(layout)
+    allow(File).to receive(:read).with('app/views/layouts/application.html.erb').and_return(layout)
     allow(File).to receive(:read).with('app/views/home/index.html.erb').and_return(template)
   end
 
