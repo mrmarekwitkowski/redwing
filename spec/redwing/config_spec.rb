@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'redwing/config'
+require 'redwing'
 
 RSpec.describe Redwing::Config do
   subject(:config) { described_class.new }
@@ -13,8 +13,8 @@ RSpec.describe Redwing::Config do
     expect(config.log_file).to eq('log/redwing.log')
   end
 
-  it 'defaults logger to nil' do
-    expect(config.logger).to be_nil
+  it 'defaults logger to a Logger instance' do
+    expect(config.logger).to be_a(::Logger)
   end
 
   it 'allows overriding views_root' do

@@ -2,12 +2,16 @@
 
 module Redwing
   class Config
-    attr_accessor :views_root, :log_file, :logger
+    attr_accessor :views_root, :log_file
+    attr_writer :logger
 
     def initialize
       @views_root = 'app/views'
       @log_file = 'log/redwing.log'
-      @logger = nil # set after Redwing::Logger is available
+    end
+
+    def logger
+      @logger ||= Redwing::Logger.create
     end
   end
 end
