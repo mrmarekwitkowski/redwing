@@ -14,7 +14,7 @@ RSpec.describe Redwing::Commands::NewCommand do
 
         %w[README.md Gemfile config/redwing.yml config/routes.rb].each do |file|
           expect(Redwing::Generator).to have_received(:create_file_by_template)
-            .with("templates/#{file}", "#{target_path}/#{file}", {name: 'my-app', type: 'api'})
+            .with("templates/#{file}.tt", "#{target_path}/#{file}", {name: 'my-app', type: 'api'})
         end
       end
 
@@ -23,7 +23,7 @@ RSpec.describe Redwing::Commands::NewCommand do
 
         %w[README.md Gemfile config/redwing.yml config/routes.rb].each do |file|
           expect(Redwing::Generator).to have_received(:create_file_by_template)
-            .with("templates/#{file}", "#{target_path}/#{file}", {name: 'my-app', type: 'web'})
+            .with("templates/#{file}.tt", "#{target_path}/#{file}", {name: 'my-app', type: 'web'})
         end
       end
     end
