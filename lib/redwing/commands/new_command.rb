@@ -27,7 +27,7 @@ module Redwing
           data = {name: app_name, type: app_type}
 
           TEMPLATES.each do |template_name|
-            template = "templates/#{template_name}"
+            template = "templates/#{template_name}.tt"
             destination = "#{target_path}/#{template_name}"
             Generator.create_file_by_template(template, destination, data)
           end
