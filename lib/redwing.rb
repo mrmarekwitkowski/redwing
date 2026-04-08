@@ -8,6 +8,7 @@ module Redwing
 
   autoload :Config
   autoload :Generator
+  autoload :Renderer
   autoload :Router
 
   def self.routes(&block)
