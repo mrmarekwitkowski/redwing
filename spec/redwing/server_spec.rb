@@ -86,5 +86,24 @@ RSpec.describe Redwing::Server do
       expect(headers['content-type']).to eq('application/json')
       expect(JSON.parse(body.first)).to eq('error' => 'Not Found')
     end
+
+    it 'logs matched requests' do
+      Redwing.routes { get('/hello') { {message: 'hello'} } }
+      Redwing::Server.start(host: 'localhost', port: 9292)
+
+      env = Rack::MockRequest.env_for('/hello', method: 'GET')
+      @rack_app.call(env)
+
+      expect(logger).to have_received(:info).with('GET /hello => 200')
+    end
+
+    it 'logs unmatched requests' do
+      Redwing::Server.start(host: 'localhost', port: 9292)
+
+      env = Rack::MockRequest.env_for('/missing', method: 'GET')
+      @rack_app.call(env)
+
+      expect(logger).to have_received(:info).with('GET /missing => 404')
+    end
   end
 end
