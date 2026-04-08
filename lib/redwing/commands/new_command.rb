@@ -8,23 +8,19 @@ require 'redwing/generator'
 module Redwing
   module Commands
     class NewCommand < Command::BaseCommand
-      VALID_APP_TYPES = %w[api web].freeze
       TEMPLATES = %w[
         README.md
         Gemfile
-        config/redwing.yml
         config/routes.rb
       ].freeze
 
-      argument :type, required: true, values: %w[api web]
       argument :name, required: true, type: :string
+      class_option :api, type: :boolean, default: false, desc: 'Generate an API-only app'
 
       no_commands do
         def perform
-          validate!
-
           target_path = "#{Pathname.pwd}/#{app_name}"
-          data = {name: app_name, type: app_type}
+          data = {name: app_name}
 
           TEMPLATES.each do |template_name|
             template = "templates/#{template_name}.tt"
@@ -33,24 +29,12 @@ module Redwing
           end
         end
 
-        def app_type
-          @type
-        end
-
         def app_name
           @name
         end
 
-        def validate!
-          raise ArgumentError, "Invalid app type '#{app_type}'. Valid types: #{valid_app_types}" unless valid_app_type?
-        end
-
-        def valid_app_type?
-          VALID_APP_TYPES.include?(app_type)
-        end
-
-        def valid_app_types
-          VALID_APP_TYPES.join(', ')
+        def api_only?
+          options[:api]
         end
       end
     end
