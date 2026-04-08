@@ -6,7 +6,7 @@ Accepted
 
 ## Context
 
-Redwing needs a way to define HTTP routes and serve JSON responses for `api` project types. The framework must also establish conventions for how generated projects are structured and how the server discovers routes at boot time.
+Redwing needs a way to define HTTP routes and serve JSON responses for API projects. The framework must also establish conventions for how generated projects are structured and how the server discovers routes at boot time.
 
 ## Decision
 
@@ -24,16 +24,17 @@ end
 
 ### Project structure
 
-Generated `api` projects follow this convention:
+Generated projects follow this convention:
 
 ```
 <name>/
   Gemfile
   README.md
   config/
-    redwing.yml    # project type marker (type: api)
     routes.rb      # route definitions — server entry point
 ```
+
+`redwing new <name>` generates a default app. Pass `--api` to generate an API-only app.
 
 ### Server boot
 
@@ -49,13 +50,14 @@ All `api` routes return `application/json` content-type automatically. Hash retu
 - `Redwing.routes` block keeps the DSL namespaced without polluting global scope
 - `config/routes.rb` is familiar to Rails developers
 - No `config.ru` — the framework abstracts Rack plumbing from users
-- `config/redwing.yml` records the project type so the runtime can vary behavior (e.g. JSON vs HTML defaults)
+- `--api` flag narrows the scaffold; absence of the flag is the default (future: full app with views)
+- Project type is not stored in config — it will be inferred from project structure at runtime
 
 ## Consequences
 
 ### Positive
 
-- Minimal boilerplate — four files for a working API
+- Minimal boilerplate — three files for a working API
 - Convention-driven — no manual wiring needed
 - Room to evolve toward class-based routes later without breaking the DSL
 
