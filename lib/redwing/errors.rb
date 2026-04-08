@@ -6,5 +6,6 @@ module Redwing
 
     class UnknownCommand < Base; end
     class PerformNotImplemented < Base; end
+    class InvalidResponse < Base; end
   end
 end
