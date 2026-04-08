@@ -7,6 +7,10 @@ module Redwing
   module Generator
     class BaseGenerator < Thor::Group
       include Thor::Actions
+
+      def self.exit_on_failure?
+        true
+      end
     end
 
     class FileByTemplate < BaseGenerator
