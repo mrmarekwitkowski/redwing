@@ -5,11 +5,13 @@ require 'redwing/server'
 RSpec.describe Redwing::Server do
   describe '.start' do
     let(:handler) { double('puma_handler') }
+    let(:logger) { instance_double(Logger, info: nil) }
     let(:rack_app) { nil }
 
     before do
       allow(Rackup::Handler).to receive(:get).with('puma').and_return(handler)
       allow(handler).to receive(:run) { |app, **_opts| @rack_app = app }
+      allow(Redwing.config).to receive(:logger).and_return(logger)
       Redwing.reset_routes!
     end
 
@@ -42,6 +44,38 @@ RSpec.describe Redwing::Server do
       expect(JSON.parse(body.first)).to eq('message' => 'hello')
     end
 
+    it 'returns HTML response for a matched route returning a String' do
+      Redwing.routes do
+        get '/hello' do
+          '<h1>Hello</h1>'
+        end
+      end
+
+      Redwing::Server.start(host: 'localhost', port: 9292)
+
+      env = Rack::MockRequest.env_for('/hello', method: 'GET')
+      status, headers, body = @rack_app.call(env)
+
+      expect(status).to eq(200)
+      expect(headers['content-type']).to eq('text/html')
+      expect(body.first).to eq('<h1>Hello</h1>')
+    end
+
+    it 'raises InvalidResponse for unexpected return type' do
+      Redwing.routes do
+        get '/bad' do
+          42
+        end
+      end
+
+      Redwing::Server.start(host: 'localhost', port: 9292)
+
+      env = Rack::MockRequest.env_for('/bad', method: 'GET')
+
+      expect { @rack_app.call(env) }
+        .to raise_error(Redwing::Error::InvalidResponse, /got Integer/)
+    end
+
     it 'returns 404 for unmatched routes' do
       Redwing::Server.start(host: 'localhost', port: 9292)
 
@@ -51,6 +85,25 @@ RSpec.describe Redwing::Server do
       expect(status).to eq(404)
       expect(headers['content-type']).to eq('application/json')
       expect(JSON.parse(body.first)).to eq('error' => 'Not Found')
+    end
+
+    it 'logs matched requests' do
+      Redwing.routes { get('/hello') { {message: 'hello'} } }
+      Redwing::Server.start(host: 'localhost', port: 9292)
+
+      env = Rack::MockRequest.env_for('/hello', method: 'GET')
+      @rack_app.call(env)
+
+      expect(logger).to have_received(:info).with('GET /hello => 200')
+    end
+
+    it 'logs unmatched requests' do
+      Redwing::Server.start(host: 'localhost', port: 9292)
+
+      env = Rack::MockRequest.env_for('/missing', method: 'GET')
+      @rack_app.call(env)
+
+      expect(logger).to have_received(:info).with('GET /missing => 404')
     end
   end
 end

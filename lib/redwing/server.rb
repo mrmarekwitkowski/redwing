@@ -13,9 +13,23 @@ module Redwing
         route = Redwing.routes.match(request.request_method, request.path_info)
 
         if route
-          body = route[:handler].call
-          [200, {'content-type' => 'application/json'}, [body.to_json]]
+          renderer = Redwing::Renderer.new
+          body = renderer.instance_eval(&route[:handler])
+
+          response = case body
+                     when Hash
+                       [200, {'content-type' => 'application/json'}, [body.to_json]]
+                     when String
+                       [200, {'content-type' => 'text/html'}, [body]]
+                     else
+                       raise Redwing::Error::InvalidResponse,
+                             "Route handler must return a Hash or String, got #{body.class}"
+                     end
+
+          Redwing.config.logger.info("#{request.request_method} #{request.path_info} => #{response[0]}")
+          response
         else
+          Redwing.config.logger.info("#{request.request_method} #{request.path_info} => 404")
           [404, {'content-type' => 'application/json'}, ['{"error":"Not Found"}']]
         end
       end

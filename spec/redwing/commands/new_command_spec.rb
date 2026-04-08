@@ -21,12 +21,26 @@ RSpec.describe Redwing::Commands::NewCommand do
       before { described_class.new(%w[my-app], {}).perform }
 
       include_examples 'scaffolds base templates'
+
+      it 'generates view templates' do
+        %w[app/views/layouts/application.html.erb app/views/home/index.html.erb].each do |file|
+          expect(Redwing::Generator).to have_received(:create_file_by_template)
+            .with("templates/#{file}.tt", "#{target_path}/#{file}", {name: 'my-app'})
+        end
+      end
     end
 
     context 'with --api flag' do
       before { described_class.new(%w[my-app], {'api' => true}).perform }
 
       include_examples 'scaffolds base templates'
+
+      it 'does not generate view templates' do
+        %w[app/views/layouts/application.html.erb app/views/home/index.html.erb].each do |file|
+          expect(Redwing::Generator).not_to have_received(:create_file_by_template)
+            .with("templates/#{file}.tt", anything, anything)
+        end
+      end
     end
   end
 end

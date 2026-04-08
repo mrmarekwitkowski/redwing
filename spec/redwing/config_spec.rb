@@ -1,30 +1,24 @@
 # frozen_string_literal: true
 
-require 'redwing/config'
-require 'tmpdir'
+require 'redwing'
 
 RSpec.describe Redwing::Config do
-  describe '#type' do
-    it 'reads the type as a symbol' do
-      Dir.mktmpdir do |dir|
-        path = File.join(dir, 'redwing.yml')
-        File.write(path, "type: api\n")
+  subject(:config) { described_class.new }
 
-        config = described_class.new(path)
+  it 'defaults views_root to app/views' do
+    expect(config.views_root).to eq('app/views')
+  end
 
-        expect(config.type).to eq(:api)
-      end
-    end
+  it 'defaults log_file to log/redwing.log' do
+    expect(config.log_file).to eq('log/redwing.log')
+  end
 
-    it 'reads web type as a symbol' do
-      Dir.mktmpdir do |dir|
-        path = File.join(dir, 'redwing.yml')
-        File.write(path, "type: web\n")
+  it 'defaults logger to a Logger instance' do
+    expect(config.logger).to be_a(Logger)
+  end
 
-        config = described_class.new(path)
-
-        expect(config.type).to eq(:web)
-      end
-    end
+  it 'allows overriding views_root' do
+    config.views_root = 'custom/views'
+    expect(config.views_root).to eq('custom/views')
   end
 end

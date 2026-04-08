@@ -35,3 +35,5 @@ AllCops:
   Exclude:
     - '.irbrc'
     - 'vendor/**/*'
+    - 'spec/**/*'
+    - 'tmp/**/*'
