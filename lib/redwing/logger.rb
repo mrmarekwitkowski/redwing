@@ -6,7 +6,7 @@ require 'logger'
 
 module Redwing
   class Logger
-    def self.create(rack_env: ENV['RACK_ENV'], debug: ENV.key?('DEBUG'))
+    def self.create(rack_env: ENV.fetch('RACK_ENV', nil), debug: ENV.key?('DEBUG'))
       production?(rack_env) ? production_logger(debug:) : development_logger
     end
 
@@ -44,8 +44,8 @@ module Redwing
         @targets = targets
       end
 
-      def write(*args)
-        @targets.each { |t| t.write(*args) }
+      def write(*)
+        @targets.each { |t| t.write(*) }
       end
 
       def flush

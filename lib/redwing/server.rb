@@ -23,7 +23,7 @@ module Redwing
                        [200, {'content-type' => 'text/html'}, [body]]
                      else
                        raise Redwing::Error::InvalidResponse,
-                         "Route handler must return a Hash or String, got #{body.class}"
+                             "Route handler must return a Hash or String, got #{body.class}"
                      end
 
           Redwing.config.logger.info("#{request.request_method} #{request.path_info} => #{response[0]}")

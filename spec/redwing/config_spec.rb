@@ -14,7 +14,7 @@ RSpec.describe Redwing::Config do
   end
 
   it 'defaults logger to a Logger instance' do
-    expect(config.logger).to be_a(::Logger)
+    expect(config.logger).to be_a(Logger)
   end
 
   it 'allows overriding views_root' do
