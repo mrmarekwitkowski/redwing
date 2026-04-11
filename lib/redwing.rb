@@ -10,6 +10,7 @@ module Redwing
   autoload :Generator
   autoload :Logger
   autoload :Renderer
+  autoload :RouteContext
   autoload :Router
 
   def self.configure

@@ -26,9 +26,10 @@ class Redwing < Thor
   end
 
   desc 'bump', 'bump gem version (--major, --minor, or --tiny)'
+
   method_option :major, type: :boolean, desc: 'Bump major version'
   method_option :minor, type: :boolean, desc: 'Bump minor version'
-  method_option :tiny,  type: :boolean, desc: 'Bump tiny (patch) version'
+  method_option :tiny, type: :boolean, desc: 'Bump tiny (patch) version'
 
   def bump
     unless [options[:major], options[:minor], options[:tiny]].one?
