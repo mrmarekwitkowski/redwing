@@ -24,6 +24,19 @@ RSpec.describe Redwing::Router do
     end
   end
 
+  %w[post put patch delete].each do |verb|
+    describe "##{verb}" do
+      it "stores a #{verb.upcase} route with path and handler" do
+        handler = proc { 'ok' }
+        router.public_send(verb, '/resource', &handler)
+
+        expect(router.routes).to contain_exactly(
+          {method: verb.upcase, path: '/resource', handler: handler}
+        )
+      end
+    end
+  end
+
   describe '#match' do
     it 'returns the matching route' do
       router.get('/hello') { 'hello' }
@@ -42,6 +55,12 @@ RSpec.describe Redwing::Router do
       router.get('/hello') { 'hello' }
 
       expect(router.match('POST', '/hello')).to be_nil
+    end
+
+    it 'does not match a different path' do
+      router.get('/hello') { 'hello' }
+
+      expect(router.match('GET', '/world')).to be_nil
     end
   end
 end

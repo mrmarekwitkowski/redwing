@@ -57,8 +57,28 @@ RSpec.describe Redwing::Server do
       status, headers, body = @rack_app.call(env)
 
       expect(status).to eq(200)
-      expect(headers['content-type']).to eq('text/html')
+      expect(headers['content-type']).to eq('text/html; charset=utf-8')
       expect(body.first).to eq('<h1>Hello</h1>')
+    end
+
+    it 'makes POST params accessible in route handler' do
+      captured_params = nil
+
+      Redwing.routes do
+        post '/submit' do
+          captured_params = params
+          'ok'
+        end
+      end
+
+      Redwing::Server.start(host: 'localhost', port: 9292)
+
+      env = Rack::MockRequest.env_for('/submit', method: 'POST',
+            params: {'entry' => 'hello'})
+      status, _, _ = @rack_app.call(env)
+
+      expect(status).to eq(200)
+      expect(captured_params).to eq('entry' => 'hello')
     end
 
     it 'raises InvalidResponse for unexpected return type' do
