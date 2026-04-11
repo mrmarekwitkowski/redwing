@@ -5,10 +5,15 @@ and design decisions, helping the team understand why certain choices were made 
 
 ## Current ADRs
 
-| Number                                | Title             | Status   | Date       |
-|---------------------------------------|-------------------|----------|------------|
-| [ADR-0001](0001-core-dependencies.md) | Core Dependencies | Accepted | 2026-04-07 |
-| [ADR-0002](0002-test-tooling.md)      | Test Tooling      | Accepted | 2026-04-07 |
+| Number                                                        | Title                                  | Status   | Date       |
+|---------------------------------------------------------------|----------------------------------------|----------|------------|
+| [ADR-0001](0001-core-dependencies.md)                         | Core Dependencies                      | Accepted | 2026-04-07 |
+| [ADR-0002](0002-test-tooling.md)                              | Test Tooling                           | Accepted | 2026-04-07 |
+| [ADR-0003](0003-template-variable-binding.md)                 | Template Variable Binding              | Accepted | 2026-04-08 |
+| [ADR-0004](0004-api-routing-and-project-bootstrap.md)         | API Routing and Project Bootstrap      | Accepted | 2026-04-08 |
+| [ADR-0005](0005-erb-rendering-and-layout.md)                  | ERB Rendering and Layout System        | Accepted | 2026-04-08 |
+| [ADR-0006](0006-configuration-and-logging.md)                 | Configuration and Logging              | Accepted | 2026-04-08 |
+| [ADR-0007](0007-route-context.md)                             | RouteContext as instance_eval Target   | Accepted | 2026-04-11 |
 
 ## Creating a New ADR
 
