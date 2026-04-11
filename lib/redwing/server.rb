@@ -13,14 +13,14 @@ module Redwing
         route = Redwing.routes.match(request.request_method, request.path_info)
 
         if route
-          renderer = Redwing::Renderer.new
-          body = renderer.instance_eval(&route[:handler])
+          context = Redwing::RouteContext.new(request)
+          body = context.instance_eval(&route[:handler])
 
           response = case body
                      when Hash
                        [200, {'content-type' => 'application/json'}, [body.to_json]]
                      when String
-                       [200, {'content-type' => 'text/html'}, [body]]
+                       [200, {'content-type' => 'text/html; charset=utf-8'}, [body]]
                      else
                        raise Redwing::Error::InvalidResponse,
                              "Route handler must return a Hash or String, got #{body.class}"
