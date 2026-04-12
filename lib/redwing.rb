@@ -7,6 +7,8 @@ module Redwing
   extend ActiveSupport::Autoload
 
   autoload :Config
+  autoload :Controller
+  autoload :Dispatcher
   autoload :Generator
   autoload :Logger
   autoload :Renderer
@@ -29,5 +31,9 @@ module Redwing
 
   def self.reset_routes!
     @router = nil
+  end
+
+  def self.load_controllers
+    Dir.glob("#{Dir.pwd}/app/controllers/**/*_controller.rb").each { |f| require f }
   end
 end

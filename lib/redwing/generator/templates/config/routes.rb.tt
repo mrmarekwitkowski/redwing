@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-require "redwing"
+require 'redwing'
 
 Redwing.routes do
-  get "/" do
-    render "home/index"
-  end
+  get '/status', to: 'status#show'
 end

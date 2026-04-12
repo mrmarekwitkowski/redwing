@@ -12,15 +12,10 @@ module Redwing
         README.md
         Gemfile
         config/routes.rb
-      ].freeze
-
-      VIEW_TEMPLATES = %w[
-        app/views/layouts/application.html.erb
-        app/views/home/index.html.erb
+        app/controllers/status_controller.rb
       ].freeze
 
       argument :name, required: true, type: :string
-      class_option :api, type: :boolean, default: false, desc: 'Generate an API-only app'
 
       no_commands do
         def perform
@@ -28,18 +23,10 @@ module Redwing
           data = {name: app_name}
 
           scaffold_templates(TEMPLATES, target_path, data)
-
-          return if api_only?
-
-          scaffold_templates(VIEW_TEMPLATES, target_path, data)
         end
 
         def app_name
           @name
-        end
-
-        def api_only?
-          options[:api]
         end
 
         def scaffold_templates(templates, target_path, data)

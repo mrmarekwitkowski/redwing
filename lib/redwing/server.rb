@@ -8,13 +8,15 @@ require 'redwing'
 module Redwing
   module Server
     def self.start(host:, port:)
+      Redwing.load_controllers
+
       app = proc do |env|
         request = Rack::Request.new(env)
         route = Redwing.routes.match(request.request_method, request.path_info)
 
         if route
-          context = Redwing::RouteContext.new(request)
-          body = context.instance_eval(&route[:handler])
+          dispatcher = Redwing::Dispatcher.new
+          body = dispatcher.call(route, request)
 
           response = case body
                      when Hash

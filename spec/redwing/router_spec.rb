@@ -24,6 +24,28 @@ RSpec.describe Redwing::Router do
     end
   end
 
+  describe 'to: syntax' do
+    it 'stores a route with a to: string' do
+      router.get('/home', to: 'home#index')
+
+      expect(router.routes).to contain_exactly(
+        {method: 'GET', path: '/home', to: 'home#index'}
+      )
+    end
+
+    it 'raises when both block and to: are given' do
+      expect {
+        router.get('/home', to: 'home#index') { 'hello' }
+      }.to raise_error(ArgumentError, 'provide either a block or to:, not both')
+    end
+
+    it 'raises when neither block nor to: is given' do
+      expect {
+        router.get('/home')
+      }.to raise_error(ArgumentError, 'provide a block or to:')
+    end
+  end
+
   %w[post put patch delete].each do |verb|
     describe "##{verb}" do
       it "stores a #{verb.upcase} route with path and handler" do
@@ -34,6 +56,24 @@ RSpec.describe Redwing::Router do
           {method: verb.upcase, path: '/resource', handler: handler}
         )
       end
+    end
+  end
+
+  describe '#root' do
+    it 'stores a GET route for /' do
+      router.root to: 'home#index'
+
+      expect(router.routes).to contain_exactly(
+        {method: 'GET', path: '/', to: 'home#index'}
+      )
+    end
+
+    it 'raises when root is defined twice' do
+      router.root to: 'home#index'
+
+      expect {
+        router.root to: 'pages#home'
+      }.to raise_error(ArgumentError, 'root route already defined')
     end
   end
 

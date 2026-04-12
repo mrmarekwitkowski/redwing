@@ -1,0 +1,7 @@
+# frozen_string_literal: true
+
+class StatusController < Redwing::Controller
+  def show
+    {status: 'ok', version: Redwing::VERSION}
+  end
+end
