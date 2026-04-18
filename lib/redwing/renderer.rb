@@ -20,11 +20,15 @@ module Redwing
       end
     end
 
-    def render(template, locals = {}, layout: true)
+    def render(template, locals = {})
       views_root = Redwing.config.views_root
       content = render_template("#{views_root}/#{template}.html.erb", locals)
-      return content unless layout
       render_layout(content, locals, views_root)
+    end
+
+    def render_without_layout(template, locals = {})
+      views_root = Redwing.config.views_root
+      render_template("#{views_root}/#{template}.html.erb", locals)
     end
 
     private

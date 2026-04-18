@@ -24,7 +24,7 @@ RSpec.describe Redwing::Renderer do
         .with('app/views/home/index.html.erb')
         .and_return('<p>Hello <%= name %></p>')
 
-      result = renderer.render('home/index', {name: 'redwing'})
+      result = renderer.render('home/index', name: 'redwing')
       expect(result).to include('<p>Hello redwing</p>')
     end
 
@@ -52,6 +52,22 @@ RSpec.describe Redwing::Renderer do
       result = renderer.render('home/index')
 
       expect(result).to include('<p>hi redwing</p>')
+    end
+  end
+
+  describe '#render_without_layout' do
+    it 'returns template content without the layout' do
+      result = renderer.render_without_layout('home/index')
+      expect(result).to eq('<p>Hello</p>')
+    end
+
+    it 'makes locals available in the template' do
+      allow(File).to receive(:read)
+        .with('app/views/home/index.html.erb')
+        .and_return('<p>Hello <%= name %></p>')
+
+      result = renderer.render_without_layout('home/index', name: 'redwing')
+      expect(result).to eq('<p>Hello redwing</p>')
     end
   end
 end
