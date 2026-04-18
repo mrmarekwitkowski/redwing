@@ -4,12 +4,12 @@ require 'active_support/core_ext/string/inflections'
 
 module Redwing
   class Dispatcher
-    def call(route, request)
+    def call(route, request, path_params = {})
       if route[:handler]
         RouteContext.new(request).instance_eval(&route[:handler])
       elsif route[:to]
         controller_class, action = resolve(route[:to])
-        controller_class.new(request).public_send(action)
+        controller_class.new(request, path_params).public_send(action)
       end
     end
 

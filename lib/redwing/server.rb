@@ -16,7 +16,7 @@ module Redwing
 
         if match
           dispatcher = Redwing::Dispatcher.new
-          body = dispatcher.call(match[:route], request)
+          body = dispatcher.call(match[:route], request, match[:params])
 
           response = case body
                      when Hash
