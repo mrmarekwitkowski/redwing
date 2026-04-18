@@ -3,7 +3,7 @@
 module Redwing
   class Router
     SUPPORTED_METHODS = %w[GET POST PUT PATCH DELETE].freeze
-    PARAM_PATTERN = %r{:([A-Za-z_][A-Za-z0-9_]*)}
+    PARAM_PATTERN = /:([A-Za-z_][A-Za-z0-9_]*)/
 
     attr_reader :routes
 

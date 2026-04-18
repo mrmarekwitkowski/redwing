@@ -7,6 +7,7 @@ require 'redwing'
 
 module Redwing
   module Server
+    # rubocop:disable Metrics/MethodLength
     def self.start(host:, port:)
       Redwing.load_controllers
       not_found = [404, {'content-type' => 'application/json'}, ['{"error":"Not Found"}']]
@@ -26,7 +27,7 @@ module Redwing
             body = dispatcher.call(match[:route], request, match[:params])
 
             case body
-            when Hash   then [200, {'content-type' => 'application/json'}, [body.to_json]]
+            when Hash then [200, {'content-type' => 'application/json'}, [body.to_json]]
             when String then [200, {'content-type' => 'text/html; charset=utf-8'}, [body]]
             else raise Redwing::Error::InvalidResponse,
                        "Route handler must return a Hash or String, got #{body.class}"
@@ -44,5 +45,7 @@ module Redwing
       handler = Rackup::Handler.get('puma')
       handler.run(app, Host: host, Port: port)
     end
+
+    # rubocop:enable Metrics/MethodLength
   end
 end
