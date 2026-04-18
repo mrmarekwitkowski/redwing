@@ -63,8 +63,8 @@ end
 ```ruby
 # config/routes.rb
 Redwing.configure do |config|
-  config.views_root = 'app/views'       # default
-  config.log_file   = 'log/redwing.log' # default (production)
+  config.views_root = 'app/views' # default
+  config.log_file = 'log/redwing.log' # default (production)
 end
 ```
 

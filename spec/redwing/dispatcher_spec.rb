@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'rack'
 require 'redwing/dispatcher'
 
 class HomeController < Redwing::Controller
@@ -17,6 +18,12 @@ end
 class NotAController
   def index
     'nope'
+  end
+end
+
+class UsersController < Redwing::Controller
+  def show
+    params
   end
 end
 
@@ -49,7 +56,7 @@ RSpec.describe Redwing::Dispatcher do
         renderer = instance_double(Redwing::Renderer)
         allow(Redwing::Renderer).to receive(:new).and_return(renderer)
         allow(renderer).to receive(:render)
-          .with('home/index', title: 'Welcome')
+          .with('home/index', {title: 'Welcome'})
           .and_return('<h1>Welcome</h1>')
 
         request = instance_double(Rack::Request, params: {})
@@ -67,6 +74,15 @@ RSpec.describe Redwing::Dispatcher do
         result = dispatcher.call(route, request)
 
         expect(result).to eq(status: 'ok')
+      end
+
+      it 'forwards path params to the controller' do
+        request = instance_double(Rack::Request, params: {'q' => 'search'})
+        route = {method: 'GET', path: '/users/:id', to: 'users#show'}
+
+        result = dispatcher.call(route, request, 'id' => '42')
+
+        expect(result).to eq('q' => 'search', 'id' => '42')
       end
 
       it 'raises when class does not inherit from Redwing::Controller' do

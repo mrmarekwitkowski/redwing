@@ -9,6 +9,12 @@ module Redwing
         locals.each { |k, v| define_singleton_method(k) { v } }
       end
 
+      def render(template, locals = {})
+        path = "#{Redwing.config.views_root}/#{template}.html.erb"
+        erb = ERB.new(File.read(path))
+        RenderContext.new(locals).render_with(erb)
+      end
+
       def render_with(erb, &)
         erb.result(binding)
       end
@@ -18,6 +24,11 @@ module Redwing
       views_root = Redwing.config.views_root
       content = render_template("#{views_root}/#{template}.html.erb", locals)
       render_layout(content, locals, views_root)
+    end
+
+    def render_without_layout(template, locals = {})
+      views_root = Redwing.config.views_root
+      render_template("#{views_root}/#{template}.html.erb", locals)
     end
 
     private

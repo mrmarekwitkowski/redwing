@@ -11,7 +11,7 @@ RSpec.describe Redwing::Router do
       router.get('/hello', &handler)
 
       expect(router.routes).to contain_exactly(
-        {method: 'GET', path: '/hello', handler: handler}
+        a_hash_including(method: 'GET', path: '/hello', handler: handler)
       )
     end
 
@@ -29,7 +29,7 @@ RSpec.describe Redwing::Router do
       router.get('/home', to: 'home#index')
 
       expect(router.routes).to contain_exactly(
-        {method: 'GET', path: '/home', to: 'home#index'}
+        a_hash_including(method: 'GET', path: '/home', to: 'home#index')
       )
     end
 
@@ -53,7 +53,7 @@ RSpec.describe Redwing::Router do
         router.public_send(verb, '/resource', &handler)
 
         expect(router.routes).to contain_exactly(
-          {method: verb.upcase, path: '/resource', handler: handler}
+          a_hash_including(method: verb.upcase, path: '/resource', handler: handler)
         )
       end
     end
@@ -64,7 +64,7 @@ RSpec.describe Redwing::Router do
       router.root to: 'home#index'
 
       expect(router.routes).to contain_exactly(
-        {method: 'GET', path: '/', to: 'home#index'}
+        a_hash_including(method: 'GET', path: '/', to: 'home#index')
       )
     end
 
@@ -81,10 +81,39 @@ RSpec.describe Redwing::Router do
     it 'returns the matching route' do
       router.get('/hello') { 'hello' }
 
-      route = router.match('GET', '/hello')
+      match = router.match('GET', '/hello')
 
-      expect(route[:path]).to eq('/hello')
-      expect(route[:handler].call).to eq('hello')
+      expect(match[:route][:path]).to eq('/hello')
+      expect(match[:route][:handler].call).to eq('hello')
+      expect(match[:params]).to eq({})
+    end
+
+    it 'extracts a single path parameter' do
+      router.get('/users/:id') { 'user' }
+
+      match = router.match('GET', '/users/42')
+
+      expect(match[:params]).to eq('id' => '42')
+    end
+
+    it 'extracts multiple path parameters' do
+      router.get('/users/:id/posts/:post_id') { 'post' }
+
+      match = router.match('GET', '/users/7/posts/99')
+
+      expect(match[:params]).to eq('id' => '7', 'post_id' => '99')
+    end
+
+    it 'does not match when a segment is missing' do
+      router.get('/users/:id') { 'user' }
+
+      expect(router.match('GET', '/users')).to be_nil
+    end
+
+    it 'does not match across path separators' do
+      router.get('/users/:id') { 'user' }
+
+      expect(router.match('GET', '/users/42/extra')).to be_nil
     end
 
     it 'returns nil when no route matches' do
