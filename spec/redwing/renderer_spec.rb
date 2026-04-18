@@ -24,7 +24,7 @@ RSpec.describe Redwing::Renderer do
         .with('app/views/home/index.html.erb')
         .and_return('<p>Hello <%= name %></p>')
 
-      result = renderer.render('home/index', name: 'redwing')
+      result = renderer.render('home/index', {name: 'redwing'})
       expect(result).to include('<p>Hello redwing</p>')
     end
 
