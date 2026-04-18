@@ -71,9 +71,9 @@ Drop the `GetOnlyStatic` middleware class and the `Rack::Builder` wrap. The whol
 ## Implementation
 
 - `lib/redwing/server.rb` — single app proc:
-  - Build a `not_found` triple once
-  - Instantiate `Rack::Static` with a 404-returning lambda as the inner app (served via `cascade: true`)
-  - Inside the app proc: router match → dispatch; else if GET/HEAD → delegate to `static`; else → `not_found`
+    - Build a `not_found` triple once
+    - Instantiate `Rack::Static` with a 404-returning lambda as the inner app (served via `cascade: true`)
+    - Inside the app proc: router match → dispatch; else if GET/HEAD → delegate to `static`; else → `not_found`
 - Handler runs the app proc directly, no `Rack::Builder`
 
 ## References
