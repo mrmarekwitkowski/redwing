@@ -27,5 +27,31 @@ RSpec.describe Redwing::Renderer do
       result = renderer.render('home/index', name: 'redwing')
       expect(result).to include('<p>Hello redwing</p>')
     end
+
+    it 'allows templates to render nested partials' do
+      allow(File).to receive(:read)
+        .with('app/views/home/index.html.erb')
+        .and_return("<section><%= render 'home/greeting' %></section>")
+      allow(File).to receive(:read)
+        .with('app/views/home/greeting.html.erb')
+        .and_return('<p>hi</p>')
+
+      result = renderer.render('home/index')
+
+      expect(result).to eq('<html><body><section><p>hi</p></section></body></html>')
+    end
+
+    it 'passes locals into the nested partial' do
+      allow(File).to receive(:read)
+        .with('app/views/home/index.html.erb')
+        .and_return("<%= render 'home/greeting', name: 'redwing' %>")
+      allow(File).to receive(:read)
+        .with('app/views/home/greeting.html.erb')
+        .and_return('<p>hi <%= name %></p>')
+
+      result = renderer.render('home/index')
+
+      expect(result).to include('<p>hi redwing</p>')
+    end
   end
 end
