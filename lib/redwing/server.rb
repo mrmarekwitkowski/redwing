@@ -36,8 +36,13 @@ module Redwing
         end
       end
 
+      wrapped = Rack::Builder.new do
+        use Rack::Static, urls: [''], root: Redwing.config.public_root, cascade: true
+        run app
+      end
+
       handler = Rackup::Handler.get('puma')
-      handler.run(app, Host: host, Port: port)
+      handler.run(wrapped, Host: host, Port: port)
     end
   end
 end
