@@ -5,7 +5,7 @@ require 'redwing/dispatcher'
 
 class HomeController < Redwing::Controller
   def index
-    render 'home/index', {title: 'Welcome'}
+    render 'home/index', title: 'Welcome'
   end
 end
 
@@ -56,7 +56,7 @@ RSpec.describe Redwing::Dispatcher do
         renderer = instance_double(Redwing::Renderer)
         allow(Redwing::Renderer).to receive(:new).and_return(renderer)
         allow(renderer).to receive(:render)
-          .with('home/index', {title: 'Welcome'})
+          .with('home/index', title: 'Welcome')
           .and_return('<h1>Welcome</h1>')
 
         request = instance_double(Rack::Request, params: {})

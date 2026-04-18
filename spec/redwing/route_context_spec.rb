@@ -23,10 +23,10 @@ RSpec.describe Redwing::RouteContext do
     it 'delegates to Renderer' do
       renderer = instance_double(Redwing::Renderer)
       allow(Redwing::Renderer).to receive(:new).and_return(renderer)
-      allow(renderer).to receive(:render).with('home/index', {name: 'test'}).and_return('<h1>test</h1>')
+      allow(renderer).to receive(:render).with('home/index', name: 'test').and_return('<h1>test</h1>')
 
       context = described_class.new(instance_double(Rack::Request, params: {}))
-      result = context.render('home/index', {name: 'test'})
+      result = context.render('home/index', name: 'test')
 
       expect(result).to eq('<h1>test</h1>')
     end
