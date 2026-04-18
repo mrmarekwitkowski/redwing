@@ -7,6 +7,21 @@ require 'redwing'
 
 module Redwing
   module Server
+    class GetOnlyStatic
+      def initialize(app, **opts)
+        @static = Rack::Static.new(app, **opts)
+        @app = app
+      end
+
+      def call(env)
+        if %w[GET HEAD].include?(env['REQUEST_METHOD'])
+          @static.call(env)
+        else
+          @app.call(env)
+        end
+      end
+    end
+
     def self.start(host:, port:)
       Redwing.load_controllers
 
@@ -37,7 +52,7 @@ module Redwing
       end
 
       wrapped = Rack::Builder.new do
-        use Rack::Static, urls: [''], root: Redwing.config.public_root, cascade: true
+        use GetOnlyStatic, urls: [''], root: Redwing.config.public_root, cascade: true
         run app
       end
 
