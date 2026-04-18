@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'rack'
 require 'redwing/controller'
 
 RSpec.describe Redwing::Controller do
@@ -16,6 +17,20 @@ RSpec.describe Redwing::Controller do
       controller = described_class.new(request)
 
       expect(controller.params).to eq({})
+    end
+
+    it 'merges path params into request params' do
+      request = instance_double(Rack::Request, params: {'q' => 'search'})
+      controller = described_class.new(request, 'id' => '42')
+
+      expect(controller.params).to eq('q' => 'search', 'id' => '42')
+    end
+
+    it 'lets path params override request params on key collision' do
+      request = instance_double(Rack::Request, params: {'id' => 'from-query'})
+      controller = described_class.new(request, 'id' => 'from-path')
+
+      expect(controller.params).to eq('id' => 'from-path')
     end
   end
 
