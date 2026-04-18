@@ -12,11 +12,11 @@ module Redwing
 
       app = proc do |env|
         request = Rack::Request.new(env)
-        route = Redwing.routes.match(request.request_method, request.path_info)
+        match = Redwing.routes.match(request.request_method, request.path_info)
 
-        if route
+        if match
           dispatcher = Redwing::Dispatcher.new
-          body = dispatcher.call(route, request)
+          body = dispatcher.call(match[:route], request)
 
           response = case body
                      when Hash
